@@ -1,3 +1,6 @@
+// Domain Parser
+// Don Franke
+
 package main
 
 import (
