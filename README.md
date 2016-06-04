@@ -7,3 +7,6 @@ Example
 ```
 ./domainparser urls.txt
 ```
+
+# Requirements
+Go
