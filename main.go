@@ -1,5 +1,6 @@
-// Domain Parser
-// This takes a list of domains/URLs/URIs and formats them into a Splunk proxy log search
+// IP Address Parser
+// Don Franke
+// This takes a list of domains/URLs/URIs and formats them into a Splunk proxy log search.
 
 package main
 
