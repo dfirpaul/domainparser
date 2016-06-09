@@ -7,6 +7,7 @@ package main
 import (
 	"bufio"
 	"bytes"
+	"flag"
 	"fmt"
 	"io"
 	"os"
@@ -45,16 +46,12 @@ func readLines(path string) (lines []string, err error) {
 }
 
 func main() {
-	//lines, err := readLines("/users/dfranke/Documents/code/g1/ips.txt")
-	var filename string
-	if len(os.Args) < 2 {
-		fmt.Println("Error: need to pass filename as argument")
-		return
-	} else {
-		filename = os.Args[1]
-	}
+	// get filename from comamnd line
+	filename := flag.String("u", "", "Name of URLs File")
+	flag.Parse()
 
-	lines, err := readLines(filename)
+	// read file
+	lines, err := readLines(*filename)
 	if err != nil {
 		fmt.Println("Error: %s\n", err)
 		return
@@ -104,11 +101,9 @@ func main() {
 			spl += " OR dest_host=\"" + url + "\""
 		}
 		i++
-		//fmt.Println(ipaddr)
 	}
 	spl += ")"
 	fmt.Println(strings.Repeat("=", 30) + " SNIP " + strings.Repeat("=", 30))
 	fmt.Println(spl)
 	fmt.Println(strings.Repeat("=", 30) + " /SNIP " + strings.Repeat("=", 30))
-
 }
