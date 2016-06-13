@@ -1,6 +1,7 @@
 // IP Address Parser
-// Don Franke
+// Created by Don Franke
 // This takes a list of domains/URLs/URIs and formats them into a Splunk proxy log search.
+// Updated 13 Jun 2016, Don Franke
 
 package main
 
@@ -48,7 +49,9 @@ func readLines(path string) (lines []string, err error) {
 func main() {
 	// get filename from comamnd line
 	filename := flag.String("u", "", "Name of URLs File")
+	includewww := flag.String("www", "", "Indicate (Y/N) whether or not to include a www. version of the domain in the results")
 	flag.Parse()
+	fmt.Printf("www: %s\n",*includewww)
 
 	// read file
 	lines, err := readLines(*filename)
@@ -96,9 +99,12 @@ func main() {
 		url = strings.Trim(url, " ")
 
 		if i == 0 {
-			spl += "dest_host=\"" + url + "\""
+			spl += "dest_host=\"" + url + "\""			
 		} else {
 			spl += " OR dest_host=\"" + url + "\""
+		}
+		if *includewww=="Y" {
+			spl += " OR dest_host=\"www." + url + "\""
 		}
 		i++
 	}
