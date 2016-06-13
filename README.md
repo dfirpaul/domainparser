@@ -5,7 +5,7 @@ This is a utility for taking a list of domains in varying formats and extracts o
 # Usage
 
 ```
-./domainparser urls.txt
+./domainparser u=[/path/to/urls file] -www=[Y/N]
 ```
 
 # Requirements
