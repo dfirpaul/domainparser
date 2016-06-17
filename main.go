@@ -1,7 +1,6 @@
 // IP Address Parser
 // Created by Don Franke
 // This takes a list of domains/URLs/URIs and formats them into a Splunk proxy log search.
-// Updated 13 Jun 2016, Don Franke
 
 package main
 
@@ -11,6 +10,7 @@ import (
 	"flag"
 	"fmt"
 	"io"
+	"log"
 	"os"
 	"regexp"
 	"strings"
@@ -51,13 +51,15 @@ func main() {
 	filename := flag.String("u", "", "Name of URLs File")
 	includewww := flag.String("www", "", "Indicate (Y/N) whether or not to include a www. version of the domain in the results")
 	flag.Parse()
-	fmt.Printf("www: %s\n",*includewww)
+
+	if *filename == "" || *includewww == "" {
+		log.Fatal("EXECUTION HALTED: Not enough arguments supplied. Usage:\n" + showUsage())
+	}
 
 	// read file
 	lines, err := readLines(*filename)
 	if err != nil {
-		fmt.Println("Error: %s\n", err)
-		return
+		log.Fatal("ERROR: %s\n", err)
 	}
 	// display contents
 	var spl string
@@ -99,11 +101,11 @@ func main() {
 		url = strings.Trim(url, " ")
 
 		if i == 0 {
-			spl += "dest_host=\"" + url + "\""			
+			spl += "dest_host=\"" + url + "\""
 		} else {
 			spl += " OR dest_host=\"" + url + "\""
 		}
-		if *includewww=="Y" {
+		if *includewww == "Y" {
 			spl += " OR dest_host=\"www." + url + "\""
 		}
 		i++
@@ -112,4 +114,13 @@ func main() {
 	fmt.Println(strings.Repeat("=", 30) + " SNIP " + strings.Repeat("=", 30))
 	fmt.Println(spl)
 	fmt.Println(strings.Repeat("=", 30) + " /SNIP " + strings.Repeat("=", 30))
+}
+
+func showUsage() string {
+	var message string
+	message = strings.Repeat("-", 75) + "\n"
+	message += "\t-u = path/file of URL file\n"
+	message += "\t-www = whether or not to include a www.[url] in results [Y/N]\n"
+	message += strings.Repeat("-", 75) + "\n"
+	return message
 }
