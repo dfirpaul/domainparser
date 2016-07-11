@@ -97,6 +97,10 @@ func main() {
 		r = regexp.MustCompile(`\/.+`)
 		url = r.ReplaceAllString(url, "")
 
+		// remove domain:
+		r = regexp.MustCompile(`domain:\s`)
+		url = r.ReplaceAllString(url, "")
+
 		// trim whitespace
 		url = strings.Trim(url, " ")
 
