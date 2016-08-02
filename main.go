@@ -81,13 +81,13 @@ func main() {
 		r = regexp.MustCompile(`[\"\'"]`)
 		url = r.ReplaceAllString(url, "")
 
-		// remove meows
-		r = regexp.MustCompile(`meow:\/\/`)
+		// remove string preceeding ://
+		r = regexp.MustCompile(`\w*:\/\/`)
 		url = r.ReplaceAllString(url, "")
 
-		// remove meows
-		r = regexp.MustCompile(`h[tx]+p:\/\/`)
-		url = r.ReplaceAllString(url, "")
+		// remove [dot]
+		r = regexp.MustCompile(`\[dot\]`)
+		url = r.ReplaceAllString(url, ".")
 
 		// remove leading arrows
 		r = regexp.MustCompile(`-->`)
